@@ -4,9 +4,11 @@ import com.api.login.constantes.UsuarioConstantes;
 import com.api.login.dao.UserDao;
 import com.api.login.pojo.User;
 import com.api.login.security.CustomerDetailsService;
+import com.api.login.security.jwt.JwtFilter;
 import com.api.login.security.jwt.JwtUtil;
 import com.api.login.service.UserService;
 import com.api.login.util.UsuarioUtil;
+import com.api.login.wrapper.UserWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -31,6 +32,9 @@ public class UserServiceImpl  implements UserService {
 
     @Autowired
     private CustomerDetailsService customerDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -76,6 +80,42 @@ public class UserServiceImpl  implements UserService {
             log.error("{}",exception);
         }
         return new ResponseEntity<String>("{\"mensaje\":\""+"Credendiales incorrectas"+"\"}",HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<List<UserWrapper>> getAllUsers() {
+
+        try {
+
+            if (jwtFilter.isAdmin()){
+                return new ResponseEntity<>(userDao.getAllUsers(),HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> update(Map<String, String> requestMap) {
+        try {
+            if(jwtFilter.isAdmin()){
+                Optional<User> optionalUser = userDao.findById(Integer.parseInt(requestMap.get("idUser")));
+                if (!optionalUser.isEmpty()){
+                    userDao.updateStatus(requestMap.get("status"),Integer.parseInt(requestMap.get("idUser")));
+                    return UsuarioUtil.getResponseEntity("Status del usuario actualizado",HttpStatus.OK);
+                }else {
+                    return  UsuarioUtil.getResponseEntity("Este usuario no existe", HttpStatus.NOT_FOUND);
+                }
+            }else {
+                return UsuarioUtil.getResponseEntity(UsuarioConstantes.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

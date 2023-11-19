@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 
 @NamedQuery(name = "User.findByEmail",query = "select u from User u where u.email=:email")
+@NamedQuery(name = "User.getAllUsers",query = "select new com.api.login.wrapper.UserWrapper(u.idUser,u.nombre,u.email,u.numeroContacto,u.status) from User u where u.role='user'")
+@NamedQuery(name = "User.updateStatus",query = "update User u set u.status=:status where u.idUser=:idUser")
 @Data
 @Entity
 @DynamicUpdate
@@ -17,8 +19,9 @@ import java.io.Serializable;
 public class User{
 
     @Id
+    @Column(name = "idUser")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idUser;
 
     @Column(name = "nombre")
     private String nombre;
