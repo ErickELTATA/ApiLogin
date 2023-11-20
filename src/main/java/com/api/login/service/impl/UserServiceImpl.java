@@ -9,6 +9,7 @@ import com.api.login.security.jwt.JwtUtil;
 import com.api.login.service.UserService;
 import com.api.login.util.UsuarioUtil;
 import com.api.login.wrapper.UserWrapper;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 
@@ -101,22 +103,35 @@ public class UserServiceImpl  implements UserService {
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
-            if(jwtFilter.isAdmin()){
+            // Verifica si el usuario que realiza la solicitud es un administrador
+            if (jwtFilter.isAdmin()) {
+                // Obtiene el ID del usuario de la solicitud y trata de encontrarlo en la base de datos
                 Optional<User> optionalUser = userDao.findById(Integer.parseInt(requestMap.get("idUser")));
-                if (!optionalUser.isEmpty()){
-                    userDao.updateStatus(requestMap.get("status"),Integer.parseInt(requestMap.get("idUser")));
-                    return UsuarioUtil.getResponseEntity("Status del usuario actualizado",HttpStatus.OK);
-                }else {
-                    return  UsuarioUtil.getResponseEntity("Este usuario no existe", HttpStatus.NOT_FOUND);
+
+                // Verifica si el usuario existe en la base de datos
+                if (!optionalUser.isEmpty()) {
+                    // Actualiza el estado del usuario en la base de datos
+                    userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("idUser")));
+
+                    // Retorna una respuesta con un mensaje exitoso y el código de estado 200 (OK)
+                    return UsuarioUtil.getResponseEntity("Status del usuario actualizado", HttpStatus.OK);
+                } else {
+                    // Retorna una respuesta con un mensaje indicando que el usuario no existe y el código de estado 404 (Not Found)
+                    return UsuarioUtil.getResponseEntity("Este usuario no existe", HttpStatus.NOT_FOUND);
                 }
-            }else {
-                return UsuarioUtil.getResponseEntity(UsuarioConstantes.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+            } else {
+                // Retorna una respuesta con un mensaje de acceso no autorizado y el código de estado 401 (Unauthorized)
+                return UsuarioUtil.getResponseEntity(UsuarioConstantes.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
-        }catch (Exception exception){
+        } catch (Exception exception) {
+            // Imprime la traza de la excepción en caso de un error inesperado
             exception.printStackTrace();
         }
-        return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
+
+        // Retorna una respuesta con un mensaje de error genérico y el código de estado 500 (Internal Server Error)
+        return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 
     private boolean validateSignUpMap(Map<String, String> requestMap){
