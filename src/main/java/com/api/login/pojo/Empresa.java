@@ -1,10 +1,17 @@
 package com.api.login.pojo;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+@NamedQuery(name = "Empresa.getAllEmpresa", query = "SELECT e FROM Empresa e")
 @Data
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "empresas")
 public class Empresa {
 
