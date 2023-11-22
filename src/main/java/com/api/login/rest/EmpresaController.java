@@ -33,7 +33,7 @@ public class EmpresaController {
         return EmpresaUtil.getResponseEntity1(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> actualizarEmpresa(@PathVariable(required = true) Integer id, @RequestBody(required = true)Map<String, String> requestMap){
         try {
             return empresaService.update(id,requestMap);
@@ -53,7 +53,7 @@ public class EmpresaController {
         return new ResponseEntity<List<Empresa>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> borrarEmpresa(@PathVariable Integer id){
         return  empresaService.delete(id);
     }

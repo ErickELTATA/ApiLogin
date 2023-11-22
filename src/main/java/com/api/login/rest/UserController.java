@@ -29,8 +29,6 @@ public class UserController {
         }
         return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody(required = true) Map<String,String> requestmap){
         try {
@@ -40,8 +38,6 @@ public class UserController {
         }
         return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
     @GetMapping("/get")
     public ResponseEntity<List<UserWrapper>> listarUsuarios(){
         try {
@@ -51,7 +47,6 @@ public class UserController {
         }
         return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @PutMapping("/update")
     public ResponseEntity<String> actualizarUsuario(@RequestBody(required = true) Map<String,String> requestmap){
         try {
