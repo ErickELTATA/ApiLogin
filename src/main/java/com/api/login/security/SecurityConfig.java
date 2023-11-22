@@ -57,6 +57,7 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    @Bean
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.cors(withDefaults())
                 .csrf().disable().authorizeHttpRequests()
