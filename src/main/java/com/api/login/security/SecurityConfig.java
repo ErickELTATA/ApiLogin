@@ -42,7 +42,8 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors()
-                .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                .configurationSource(corsConfigurationSource())
+                //request -> new CorsConfiguration().applyPermitDefaultValues()
                 .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
