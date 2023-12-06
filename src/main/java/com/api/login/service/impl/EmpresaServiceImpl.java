@@ -7,13 +7,11 @@ import com.api.login.security.jwt.JwtFilter;
 import com.api.login.security.jwt.JwtUtil;
 import com.api.login.service.EmpresaService;
 import com.api.login.util.EmpresaUtil;
-import com.api.login.wrapper.EmpresaWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +20,10 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class EmpresaServiceImpl implements EmpresaService {
-
     @Autowired
     private EmpresaDao empresaDao;
-
     @Autowired
     private JwtFilter jwtFilter;
-
     @Autowired
     private JwtUtil jwtUtil;
     @Override
@@ -46,13 +41,11 @@ public class EmpresaServiceImpl implements EmpresaService {
         }
         return EmpresaUtil.getResponseEntity1(UsuarioConstantes.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @Override
     public ResponseEntity<String> update(Integer id,Map<String, String> requestMap ) {
         try {
                 // Obtén el ID del usuario de la solicitud y trata de encontrarlo en la base de datos
                 Optional<Empresa> optionalUser = empresaDao.findById(id);
-
                 if (!optionalUser.isEmpty()) {
                     // Obtén el usuario de la base de datos
                     Empresa empresa = optionalUser.get();
@@ -84,7 +77,6 @@ public class EmpresaServiceImpl implements EmpresaService {
         // Retorna una respuesta con un mensaje de error genérico y el código de estado 500 (Internal Server Error)
         return EmpresaUtil.getResponseEntity1(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @Override
     public ResponseEntity<String> delete(Integer userId) {
         try {
@@ -105,11 +97,9 @@ public class EmpresaServiceImpl implements EmpresaService {
             // Imprime la traza de la excepción en caso de un error inesperado
             exception.printStackTrace();
         }
-
         // Retorna una respuesta con un mensaje de error genérico y el código de estado 500 (Internal Server Error)
         return EmpresaUtil.getResponseEntity1(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @Override
     public ResponseEntity<List<Empresa>> getAllEmpresa() {
         try{
@@ -119,8 +109,6 @@ public class EmpresaServiceImpl implements EmpresaService {
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
     private boolean validateRegister(Map<String,String> requestMap){
         if (requestMap.containsKey("nombreEmpresa") &&
                 requestMap.containsKey("sectorEmpresa") &&
@@ -135,7 +123,6 @@ public class EmpresaServiceImpl implements EmpresaService {
         }
         return false;
     }
-
     private Empresa getEmpresaFromMap(Map<String, String> requestMap){
         Empresa empresa = new Empresa();
         empresa.setNombreEmpresa(requestMap.get("nombreEmpresa"));

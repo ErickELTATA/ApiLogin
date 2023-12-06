@@ -18,11 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.time.Duration;
 import java.util.Arrays;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -56,15 +53,6 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
-    }
-
-    @Bean
-    protected void configure(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.cors(withDefaults())
-                .csrf().disable().authorizeHttpRequests()
-                .dispatcherTypeMatchers(HttpMethod.valueOf("/billing/**")).authenticated()
-                .and()
-                .httpBasic();
     }
 
     @Bean

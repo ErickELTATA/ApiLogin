@@ -25,19 +25,14 @@ import java.util.*;
 @Slf4j
 @Service
 public class UserServiceImpl  implements UserService {
-
     @Autowired
     private UserDao userDao;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private CustomerDetailsService customerDetailsService;
-
     @Autowired
     private JwtFilter jwtFilter;
-
     @Autowired
     private JwtUtil jwtUtil;
     @Override
@@ -60,7 +55,6 @@ public class UserServiceImpl  implements UserService {
         }
         return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @Override
     public ResponseEntity<String> login(Map<String, String> requestMap) {
         log.info("Dentro de login");
@@ -83,12 +77,9 @@ public class UserServiceImpl  implements UserService {
         }
         return new ResponseEntity<String>("{\"mensaje\":\""+"Credendiales incorrectas"+"\"}",HttpStatus.BAD_REQUEST);
     }
-
     @Override
     public ResponseEntity<List<UserWrapper>> getAllUsers() {
-
         try {
-
             if (jwtFilter.isAdmin()){
                 return new ResponseEntity<>(userDao.getAllUsers(),HttpStatus.OK);
             }else {
@@ -99,7 +90,6 @@ public class UserServiceImpl  implements UserService {
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
@@ -127,20 +117,15 @@ public class UserServiceImpl  implements UserService {
             // Imprime la traza de la excepción en caso de un error inesperado
             exception.printStackTrace();
         }
-
         // Retorna una respuesta con un mensaje de error genérico y el código de estado 500 (Internal Server Error)
         return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-
     private boolean validateSignUpMap(Map<String, String> requestMap){
         if(requestMap.containsKey("nombre") && requestMap.containsKey("numeroContacto") && requestMap.containsKey("email") && requestMap.containsKey("password")){
             return true;
         }
         return false;
     }
-
     private User getUserFromMap(Map<String, String> requestMap){
         User user = new User();
         user.setNombre(requestMap.get("nombre"));

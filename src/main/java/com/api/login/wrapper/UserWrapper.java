@@ -8,14 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserWrapper {
-
     private Integer idUser;
-
     private String nombre;
-
     private String email;
-
     private  String numeroContacto;
-
     private String status;
 }

@@ -18,11 +18,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/company")
 public class EmpresaController {
-
     @Autowired
     private EmpresaService empresaService;
-
-
     @PostMapping("/register")
     public ResponseEntity<String> registrarEmpresa(@RequestBody(required = true)Map<String,String> requestMap){
         try {
@@ -32,7 +29,6 @@ public class EmpresaController {
         }
         return EmpresaUtil.getResponseEntity1(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<String> actualizarEmpresa(@PathVariable(required = true) Integer id, @RequestBody(required = true)Map<String, String> requestMap){
         try {
@@ -42,7 +38,6 @@ public class EmpresaController {
         }
         return EmpresaUtil.getResponseEntity1(UsuarioConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @GetMapping("/get")
     public ResponseEntity<List<Empresa>> listarEmpresas(){
         try {
@@ -52,11 +47,8 @@ public class EmpresaController {
         }
         return new ResponseEntity<List<Empresa>>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> borrarEmpresa(@PathVariable Integer id){
         return  empresaService.delete(id);
     }
-
-
 }

@@ -10,24 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmpresaWrapper {
-
     private Integer idEmpresa;
-
     private String nombreEmpresa;
-
     private String sectorEmpresa;
-
     private String sucursalEmpresa;
-
     private String logoEmpresa;
-
     private String nombreContacto;
-
     private String telefonoContacto;
-
-    private  String usuario;
-
+    private String usuario;
     private String contrasena;
-
     private String dominioEmpresa;
 }

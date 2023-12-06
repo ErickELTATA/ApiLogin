@@ -17,7 +17,6 @@ import java.io.Serializable;
 @DynamicInsert
 @Table(name = "usuariosLogin")
 public class User{
-
     @Id
     @Column(name = "idUser")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,12 +12,8 @@ import java.util.List;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Integer> {
-
     User findByEmail(@Param(("email")) String email);
-
     List<UserWrapper> getAllUsers();
-
-
     @Transactional
     @Modifying
     Integer updateStatus(@Param("status") String status,@Param("idUser") Integer id);

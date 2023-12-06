@@ -16,10 +16,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
-
     @Autowired
     private UserService userService;
-
     @PostMapping("/signup")
     public ResponseEntity<String> registrarUsuario(@RequestBody(required = true)Map<String, String> requestMap){
         try{
@@ -56,6 +54,4 @@ public class UserController {
         }
         return UsuarioUtil.getResponseEntity(UsuarioConstantes.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
 }
